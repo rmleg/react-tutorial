@@ -1,15 +1,15 @@
 import React from "react"
-import TodoItem from "./TodoItem"
+import Joke from "./Joke"
 export default App
 
 function App() {
-    const myClassName = 'my-form';
-
     return (
-        <form className={myClassName}>
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-        </form>
+        <div>
+            <Joke 
+                question="why did the chicken cross the road?"
+                answer="to get to the other side"
+            />
+            <Joke answer="That's what she said!" />
+        </div>
     )
 }
