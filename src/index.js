@@ -1,5 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom"
 
-//what to render, where to render it
-ReactDOM.render(<h1>Hello World!</h1>, document.getElementById("root"))
+ReactDOM.render(<ul>
+    <li>item 1</li>
+    <li>item 2</li>
+    <li>item 3</li>
+</ul>, document.querySelector("#root"));
