@@ -1,34 +1,26 @@
-/* 
-Given a list of products (as an array of objects, as seen in productsData.js)
-render a <Product /> component (which you'll also need to create) for each
-product in the list.
+/*
+Let's practice props and mapping components on our todo list app!
 
-Make sure to use the array's `.map()` method to create these components, and 
-don't forget to pass a `key` prop to it to avoid the warning.
+I've created a js file with some todos data in it, which I'm imported
+ into this file. (Normally this data would come from an API call, not a local file). 
+
+Challenge: Using the array map method, render a child component for
+ each todo item in the todosData array and pass the relevant data to it.
 */
 
 import React from "react"
-import Product from './Product'
-import productsData from "./vschoolProducts"
+import TodoItem from "./TodoItem"
+import todosData from "./todosData"
 
 function App() {
 
-    const productsArray = productsData.map(
-        product => {
-            return (
-                <Product 
-                    key={product.id}
-                    name={product.name}
-                    price={product.price}
-                    description = {product.description}
-                />
-            )
-        }
+    const todoComponents = todosData.map(
+        item => <TodoItem key={item.id} item={item} />
     )
 
     return (
-        <div>
-            {productsArray}
+        <div className="todo-list">
+            {todoComponents}
         </div>
     )
 }
