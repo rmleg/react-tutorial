@@ -1,14 +1,6 @@
 import React from "react"
 
 class TodoItem extends React.Component {
-    constructor() {
-        super();
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange() {
-        return this.props.onChange();
-    }
 
     render() {
         return (
@@ -16,7 +8,7 @@ class TodoItem extends React.Component {
                 <input 
                     type="checkbox"
                     checked={this.props.item.completed}
-                    onChange={this.onChange}
+                    onChange={() => this.props.onChange(this.props.item.id)}
                 />
                 <p>{this.props.item.text}</p>
             </div>
