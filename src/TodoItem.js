@@ -7,15 +7,15 @@ class TodoItem extends React.Component {
     }
 
     onChange() {
-        return this.props.onChange(this.props.item.id);
+        return this.props.onChange();
     }
 
     render() {
         return (
             <div className="todo-item">
                 <input 
-                    type="checkbox" 
-                    checked={this.props.item.completed} 
+                    type="checkbox"
+                    checked={this.props.item.completed}
                     onChange={this.onChange}
                 />
                 <p>{this.props.item.text}</p>

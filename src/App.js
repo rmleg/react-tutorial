@@ -18,40 +18,34 @@ import todosData from "./todosData"
 
 class App extends React.Component {
     constructor() {
-        super()
+        super();
         this.state = {
             todos: todosData
         }
-        this.handleChange = this.handleChange.bind(this)
+        this.handleChange = this.handleChange.bind(this);
     }
-    
+
     handleChange(id) {
-        // Update state so that the item with the given id flips `completed` from false to true (or vise versa)
-        // Remember not to modify prevState directly, but instead to return a new version 
-        // of state with the change you want included in that update. (Think how you might use the `.map` method to do this)
-        this.setState((prevState) => {
-            return prevState.todos.map(item => {
-                if (item.id === id) {
-                    item.completed = !item.completed;
-                }
-            });
-        });
-    }
-    
-    render() {
-        const todoItems = this.state.todos.map(
-                item => <TodoItem 
-                            onChange={(e) => this.handleChange(item.id, e)} 
-                            key={item.id} 
-                            item={item}
-                        />
+        this.setState(prevState => {
+            console.log(prevState);
+            return(
+                prevState.todos.map(item => {
+                    item.id === id ? item.completed = !item.completed : item.completed = item.completed
+                })
             )
-        
+        })
+    }
+
+    render() {
+        const todoItems = this.state.todos.map(item => <TodoItem 
+            onChange={(e) => this.handleChange(item.id, e)} 
+            key={item.id} 
+            item={item} />)
         return (
             <div className="todo-list">
                 {todoItems}
             </div>
-        )    
+        );
     }
 }
 
