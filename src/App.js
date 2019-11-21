@@ -1,43 +1,24 @@
-/*
-In the previous iteration of this todo list app, 
-we pulled in todos data from a JSON file and mapped over it to display the todo items.
-
-Eventually we'll want to be able to modify the data, 
-which will only happen if we've "loaded" the data in to the component's state
-
-Challenge: Change the <App /> component into a 
-stateful class component and load the imported `todosData` into state.
-*/
-
 import React from "react"
-import TodoItem from "./TodoItem"
-import todosData from "./todosData"
 
-class App extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            todoItems: todosData.map(item => <TodoItem key={item.id} item={item}/>)
-        }
-    }
-    
-    render() {
-        return (
-            <div className="todo-list">
-                {this.state.todoItems}
-            </div>
-        )
-    }
+function handleClick() {
+    console.log("I was clicked")
 }
 
-/*function App() {
-    const todoItems = todosData.map(item => <TodoItem key={item.id} item={item}/>)
-    
+function handleMouseOver(e) {
+    console.log(e.target);
+}
+
+// https://reactjs.org/docs/events.html#supported-events
+
+function App() {
     return (
-        <div className="todo-list">
-            {todoItems}
+        <div>
+            <img onMouseOver={handleMouseOver} src="https://www.fillmurray.com/200/100"/>
+            <br />
+            <br />
+            <button onClick={handleClick}>Click me</button>
         </div>
     )
-}*/
+}
 
 export default App
