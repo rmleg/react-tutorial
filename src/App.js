@@ -12,7 +12,44 @@
  *  it calls the `handleChange` method and passes the id of the todo into the function
  */
 
+
 import React from "react"
+import Button from "./Button"
+
+class App extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            isLoggedIn: true
+        }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        this.setState(prevState => {
+            return (
+                {
+                    isLoggedIn: !prevState.isLoggedIn
+                }
+            );
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>You are {this.state.isLoggedIn ? 'logged in' : 'logged out'}.</h2>
+                <Button onClick={this.handleClick} text={this.state.isLoggedIn ? "Log Out" : "Log In"} />
+            </div>
+        )
+    }
+}
+
+export default App
+
+
+
+/* import React from "react"
 import TodoItem from "./TodoItem"
 import todosData from "./todosData"
 
@@ -67,4 +104,4 @@ class App extends React.Component {
     }
 }
 
-export default App
+export default App */
