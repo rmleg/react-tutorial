@@ -20,9 +20,21 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            todos: todosData
+            todos: todosData,
+            isLoading: true
         }
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    //After App mounts, run this function after 1.5 seconds
+    //when state changes, component rerenders with updated state
+    //result: 'loading...' for 1.5 seconds, then todos show up
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState( {
+                isLoading: false
+            })
+        }, 1500)
     }
 
     handleChange(id) {
@@ -49,7 +61,7 @@ class App extends React.Component {
             item={item} />)
         return (
             <div className="todo-list">
-                {todoItems}
+                {this.state.isLoading ? <p>Loading...</p> : todoItems}
             </div>
         );
     }
