@@ -1,107 +1,112 @@
-/* *
- * Let's make it so our checkbox can actually mark our todo as complete or incomplete!
- * This challenge is a little more involved than some of the past ones. Check the comments 
- * in the code for some help on accomplishing this one
+import React, {Component} from "react"
+
+/**
+ * Challenge: Wire up the partially-finished travel form so that it works!
+ * Remember to use the concept of controlled forms
+ * https://reactjs.org/docs/forms.html
  * 
- * Challenge: 
- * 1. Create an event handler in the App component for when the checkbox is clicked (which is an `onChange` event)
- *    a. This method will be the trickest part. Check the comments in the stubbed-out
- *  method below for some pseudocode to help guide you through this part
- * 2. Pass the method down to the TodoItem component
- * 3. In the TodoItem component, make it so when the `onChange` event happens,
- *  it calls the `handleChange` method and passes the id of the todo into the function
+ * All information should be populating the text below the form in real-time
+ * as you're filling it out
+ * 
+ * This exercise is adapted from the V School curriculum on vanilla JS forms:
+ * https://coursework.vschool.io/travel-form/
+ * 
+ * All of our challenges and learning resources are open for the public
+ * to play around with and learn from at https://coursework.vschool.io
  */
 
-
-import React from "react"
-import Button from "./Button"
-
-class App extends React.Component {
+class App extends Component {
     constructor() {
         super();
         this.state = {
-            isLoggedIn: true
+            firstName: '',
+            lastName: '',
+            age: '',
+            gender: 'male',
+            location: '',
+            dietaryRestrictions: []
         }
-        this.handleClick = this.handleClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleClick() {
-        this.setState(prevState => {
-            return (
+    handleChange(e) {
+        if(e.target.type === 'checkbox' && e.target.name === 'dietaryRestrictions') {
+            console.log(e.target.name)
+            if(e.target.checked) {
+                this.setState(prevState =>(
+                    {
+                        [e.target.name]: prevState.dietaryRestrictions.push(e.target.id)
+                    }
+                ))
+            }
+            else {
+                this.setState(prevState =>(
+                    {
+                        [e.target.name]: prevState.dietaryRestrictions.pop(e.target.id)
+                    }
+                ))
+            }
+            this.setState(
                 {
-                    isLoggedIn: !prevState.isLoggedIn
+                    [e.target.name]: e.target.checked
                 }
-            );
-        });
+            )
+        }
+        else {
+            this.setState(
+                {
+                    [e.target.name]: e.target.value
+                }
+            )
+        }
     }
-
+    
     render() {
         return (
-            <div>
-                <h2>You are {this.state.isLoggedIn ? 'logged in' : 'logged out'}.</h2>
-                <Button onClick={this.handleClick} text={this.state.isLoggedIn ? "Log Out" : "Log In"} />
-            </div>
+            <main>
+                <form>
+                    <input onChange={this.handleChange} value={this.state.firstName} name="firstName" placeholder="First Name" /><br />
+                    <input onChange={this.handleChange} value={this.state.lastName} name="lastName" placeholder="Last Name" /><br />
+                    <input onChange={this.handleChange} value={this.state.age} name="age" placeholder="Age" /><br />
+                    
+                    {/* Create radio buttons for gender here */}
+                    <input onChange={this.handleChange} type="radio" name="gender" value="male" checked={this.state.gender === 'male'} /><label htmlFor="gender">Male</label><br />
+                    <input onChange={this.handleChange} type="radio" name="gender" value="female" checked={this.state.gender === 'female'} /><label htmlFor="gender">Female</label>
+                    <br />
+                    
+                    {/* Create select box for location here */}
+                    <select onChange={this.handleChange} value={this.state.location} name="location">
+                        <option>Detroit</option>
+                        <option>Atlanta</option>
+                        <option>Los Angeles</option>
+                    </select>
+                    <br />
+                    
+                    {/* Create check boxes for dietary restrictions here */}
+                    <input onChange={this.handleChange} type="checkbox" name="dietaryRestrictions" id="nut free" checked={this.state.nutFree} />
+                    <label htmlFor="nut-free">Nut Free</label><br />
+                    <input onChange={this.handleChange} type="checkbox" name="dietaryRestrictions" id="kosher" checked={this.state.kosher} />
+                    <label htmlFor="kosher">Kosher</label><br />
+                    <input onChange={this.handleChange} type="checkbox" name="dietaryRestrictions" id="halal" checked={this.state.halal} />
+                    <label htmlFor="halal">Halal</label><br />
+                    <br />
+                    
+                    <button>Submit</button>
+                </form>
+                <hr />
+                <h2>Entered information:</h2>
+                <p>Your name: {this.state.firstName} {this.state.lastName}</p>
+                <p>Your age: {this.state.age}</p>
+                <p>Your gender: {this.state.gender}</p>
+                <p>Your destination: {this.state.location}</p>
+                <p>
+                    Your dietary restrictions: <br />
+                    {/* Dietary restrictions here, comma separated */}
+                    {this.state.dietaryRestrictions}
+                </p>
+            </main>
         )
     }
 }
 
 export default App
-
-
-
-/* import React from "react"
-import TodoItem from "./TodoItem"
-import todosData from "./todosData"
-
-class App extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            todos: todosData,
-            isLoading: true
-        }
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    //After App mounts, run this function after 1.5 seconds
-    //when state changes, component rerenders with updated state
-    //result: 'loading...' for 1.5 seconds, then todos show up
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState( {
-                isLoading: false
-            })
-        }, 1500)
-    }
-
-    handleChange(id) {
-        this.setState(prevState => {
-            const newState = prevState.todos.map(item => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        completed: !item.completed
-                    }
-                }
-                return item;
-            });
-            return {
-                todos: newState
-            }
-        })
-    }
-
-    render() {
-        const todoItems = this.state.todos.map(item => <TodoItem 
-            onChange={this.handleChange} 
-            key={item.id} 
-            item={item} />)
-        return (
-            <div className="todo-list">
-                {this.state.isLoading ? <p>Loading...</p> : todoItems}
-            </div>
-        );
-    }
-}
-
-export default App */
