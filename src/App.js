@@ -22,40 +22,57 @@ class App extends Component {
             firstName: '',
             lastName: '',
             age: '',
-            gender: 'male',
+            gender: '',
             location: '',
             dietaryRestrictions: []
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
     }
 
     handleChange(e) {
-        if(e.target.type === 'checkbox' && e.target.name === 'dietaryRestrictions') {
-            console.log(e.target.name)
-            if(e.target.checked) {
-                this.setState(prevState =>(
+        const {name, type, checked, value, id} = e.target;
+        if(type === 'checkbox' && name === 'dietaryRestrictions') {
+            if(checked) {
+                this.setState(prevState => 
                     {
-                        [e.target.name]: prevState.dietaryRestrictions.push(e.target.id)
+                        const list = prevState.dietaryRestrictions.concat(id);
+                        return (
+                            {
+                                [name]: list
+                            }
+                        );
                     }
-                ))
+                )
             }
             else {
-                this.setState(prevState =>(
-                    {
-                        [e.target.name]: prevState.dietaryRestrictions.pop(e.target.id)
-                    }
-                ))
+                this.setState(prevState => {
+                    const list = prevState.dietaryRestrictions;
+                    //remove the item that is the id
+                    const filteredList = list.filter(item => item !== id);
+                    return (
+                        {
+                            [name]: filteredList
+                        }
+                    );
+                });
             }
+        }
+        else if(type === 'checkbox') {
             this.setState(
                 {
-                    [e.target.name]: e.target.checked
+                    [name]: checked
                 }
             )
         }
         else {
             this.setState(
                 {
-                    [e.target.name]: e.target.value
+                    [name]: value
                 }
             )
         }
@@ -64,7 +81,7 @@ class App extends Component {
     render() {
         return (
             <main>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <input onChange={this.handleChange} value={this.state.firstName} name="firstName" placeholder="First Name" /><br />
                     <input onChange={this.handleChange} value={this.state.lastName} name="lastName" placeholder="Last Name" /><br />
                     <input onChange={this.handleChange} value={this.state.age} name="age" placeholder="Age" /><br />
@@ -102,7 +119,7 @@ class App extends Component {
                 <p>
                     Your dietary restrictions: <br />
                     {/* Dietary restrictions here, comma separated */}
-                    {this.state.dietaryRestrictions}
+                    {this.state.dietaryRestrictions.join(', ')}
                 </p>
             </main>
         )
